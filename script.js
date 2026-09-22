@@ -6,7 +6,7 @@
 
 /* ---------- KONFIGURASI (⚙️ TUNABLE) ---------- */
 const CONFIG = {
-  schoolName: 'SMP Harapan Bangsa',
+  schoolName: 'SMP Negeri 19 Kota Bekasi',
   className: 'Kelas 8',
   passScore: 70,            // skor minimal lulus level
   hintPenalty: 5,           // pengurangan poin per hint
