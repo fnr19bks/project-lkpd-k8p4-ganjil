@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mode Guru — Kunci Jawaban & Rubrik</title>
+<style>
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f6f8; color: #1f2937; line-height: 1.65; padding: 24px; max-width: 900px; margin: 0 auto; }
+  h1 { color: #2563eb; }
+  h2 { margin-top: 28px; border-bottom: 2px solid #e5e7eb; padding-bottom: 6px; }
+  .card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); margin-bottom: 20px; }
+  pre { background: #1e293b; color: #e2e8f0; padding: 14px; border-radius: 10px; font-family: 'Courier New', monospace; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { border: 1px solid #e5e7eb; padding: 8px 12px; text-align: left; }
+  th { background: #f1f5f9; }
+  .note { background: #fef3c7; border-left: 5px solid #f59e0b; padding: 10px 14px; border-radius: 8px; }
+</style>
+</head>
+<body>
+
+<h1>📋 Mode Guru — Kunci Jawaban & Rubrik</h1>
+<p class="note">Halaman ini tidak ditautkan dari game murid. Simpan untuk referensi guru.</p>
+
+<div class="card">
+  <h2>Level 1 — Pemula</h2>
+  <p><strong>Soal:</strong> Tulis pseudocode untuk menentukan bilangan genap atau ganjil.</p>
+  <p><strong>Kunci:</strong></p>
+  <pre>MULAI
+  INPUT angka
+  sisa = angka mod 2
+  JIKA sisa = 0 MAKA
+    TAMPILKAN "Genap"
+  LAINNYA
+    TAMPILKAN "Ganjil"
+SELESAI</pre>
+  <p><strong>Kriteria penilaian:</strong> MULAI/SELESAI (10), INPUT (20), mod/2 (20), JIKA-LAINNYA (25), Genap/Ganjil (25). Total 100. Lulus ≥ 70.</p>
+</div>
+
+<div class="card">
+  <h2>Level 2 — Menengah</h2>
+  <p><strong>Pseudocode:</strong></p>
+  <pre>MULAI
+  INPUT nilai_uts, nilai_uas
+  nilai_akhir = nilai_uts * 0.4 + nilai_uas * 0.4
+  TAMPILKAN nilai_akhir
+SELESAI</pre>
+  <p><strong>Tracing dengan nilai_uts=80, nilai_uas=90:</strong></p>
+  <table>
+    <tr><th>Langkah</th><th>Nilai</th></tr>
+    <tr><td>80 × 0.4</td><td>32</td></tr>
+    <tr><td>90 × 0.4</td><td>36</td></tr>
+    <tr><td>nilai_akhir</td><td>68</td></tr>
+    <tr><td>Output</td><td>68</td></tr>
+  </table>
+  <p><strong>Bug:</strong> Baris 3 — total bobot hanya 0,8 (80%). Seharusnya 1,0 (100%).</p>
+  <p><strong>Perbaikan yang diterima:</strong></p>
+  <ul>
+    <li><code>nilai_akhir = nilai_uts * 0.5 + nilai_uas * 0.5</code></li>
+    <li><code>nilai_akhir = nilai_uts * 0.4 + nilai_uas * 0.4 + nilai_tugas * 0.2</code></li>
+    <li><code>nilai_akhir = (nilai_uts + nilai_uas) / 2</code></li>
+  </ul>
+  <p><strong>Skor:</strong> Tracing 40, Bug 30, Perbaikan 30. Total 100. Lulus ≥ 70.</p>
+</div>
+
+<div class="card">
+  <h2>Level 3 — Tantangan</h2>
+  <p><strong>Soal:</strong> Pseudocode kategori IMT.</p>
+  <p><strong>Kunci:</strong></p>
+  <pre>MULAI
+  INPUT berat, tinggi
+  IMT = berat / (tinggi * tinggi)
+  JIKA IMT &lt; 18.5 MAKA
+    TAMPILKAN "Kurus"
+  LAINNYA
+    JIKA IMT &lt;= 25 MAKA
+      TAMPILKAN "Normal"
+    LAINNYA
+      TAMPILKAN "Gemuk"
+SELESAI</pre>
+  <p><strong>Skor:</strong> Struktur (10), INPUT (15), Rumus (15), Percabangan ≥2 (30), Output lengkap (30). Total 100. Lulus ≥ 70.</p>
+</div>
+
+<div class="card">
+  <h2>Rubrik Penilaian Akhir</h2>
+  <table>
+    <tr><th>Aspek</th><th>Skor 4</th><th>Skor 3</th><th>Skor 2</th><th>Skor 1</th></tr>
+    <tr><td>Struktur pseudocode</td><td>Lengkap &amp; runtut</td><td>Lengkap, kurang runtut</td><td>Ada bagian hilang</td><td>Tidak jelas</td></tr>
+    <tr><td>Ketepatan logika</td><td>Benar &amp; efisien</td><td>Benar, kurang efisien</td><td>Ada kesalahan kecil</td><td>Logika keliru</td></tr>
+    <tr><td>Proses debugging (tracing)</td><td>Tabel rapi &amp; tepat</td><td>Ditemukan, kurang rapi</td><td>Ditemukan sebagian</td><td>Belum ditemukan</td></tr>
+  </table>
+</div>
+
+</body>
+</html>
