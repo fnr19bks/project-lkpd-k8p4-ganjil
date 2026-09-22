@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LKPD Interaktif — Pseudocode (kode semu) &amp; Debugging (menemukan dan memperbaiki kesalahan program) — Informatika Kelas 8</title>
+<meta name="description" content="LKPD interaktif berbentuk game web untuk melatih penulisan pseudocode dan penemuan logical error. Informatika Kelas 8, Fase D, Berpikir Komputasional." />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<a class="skip-link" href="#app">Lompat ke isi utama</a>
+
+<!-- ====================== TOPBAR ====================== -->
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-icon" aria-hidden="true">🧩</span>
+    <span class="brand-text">
+      <strong>Petualangan Pseudocode</strong>
+      <small id="brandSchool">SMP Negeri 19 Kota Bekasi — Informatika Kelas 8</small>
+    </span>
+  </div>
+  <nav class="topnav" aria-label="Menu utama">
+    <button type="button" class="btn btn-ghost" id="btnDictionary">📖 Kamus Istilah</button>
+    <button type="button" class="btn btn-ghost" id="btnMute" aria-pressed="false">🔊 Suara: Aktif</button>
+    <button type="button" class="btn btn-ghost is-hidden" id="btnHome">🗺️ Kembali ke Peta Level</button>
+  </nav>
+</header>
+
+<main id="app">
+
+  <noscript>
+    <div class="card">
+      <h2>JavaScript belum aktif</h2>
+      <p>Game ini membutuhkan JavaScript. Mohon aktifkan JavaScript di browser, lalu muat ulang halaman ini.</p>
+    </div>
+  </noscript>
+
+  <!-- ====================== 1. LAYAR PEMBUKA ====================== -->
+  <section id="screen-splash" class="screen active">
+    <div class="card hero">
+      <p class="kicker">LKPD Interaktif — Berpikir Komputasional</p>
+      <h1>🧩 Petualangan Pseudocode (kode semu)</h1>
+      <p class="hero-sub">Informatika Kelas 8 (Fase D) — Kurikulum Merdeka</p>
+
+      <p>
+        Di game ini kamu akan <strong>membaca dan menelusuri</strong> pseudocode (kode semu) baris demi baris,
+        membedakan <strong>Syntax Error (kesalahan aturan penulisan)</strong> dengan
+        <strong>Logical Error (kesalahan logika berpikir)</strong>, lalu menemukan
+        <strong>Bug (kesalahan pada program)</strong> memakai teknik
+        <strong>Tracing / Desk-Checking (menelusuri nilai variabel baris demi baris)</strong>.
+      </p>
+      <p>
+        Ada <strong>3 level</strong>: 🟢 Pemula, 🟡 Menengah, dan 🔴 Tantangan.
+        Kalau salah, tidak apa-apa — kamu boleh mencoba lagi dan memakai tombol <strong>Petunjuk</strong>.
+      </p>
+
+      <div class="btn-row center-row">
+        <button type="button" class="btn btn-primary btn-big" id="btnStart">▶️ Mulai Bermain</button>
+        <button type="button" class="btn btn-secondary btn-big" id="btnSplashDictionary">📖 Kamus Istilah</button>
+      </div>
+
+      <p class="muted small center">
+        Progresmu tersimpan otomatis di browser ini saja (localStorage). Tidak ada data yang dikirim ke internet.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================== 2. KAMUS ISTILAH ====================== -->
+  <section id="screen-dictionary" class="screen">
+    <div class="card">
+      <h2>📖 Kamus Istilah</h2>
+      <p class="muted">
+        Istilah bahasa Inggris selalu ditampilkan bersama artinya dalam bahasa Indonesia,
+        supaya kamu otomatis terbiasa dengan istilah aslinya.
+      </p>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Istilah Inggris</th>
+              <th scope="col">Arti Indonesia</th>
+            </tr>
+          </thead>
+          <tbody id="dictionaryBody">
+            <!-- diisi oleh script.js -->
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Istilah pendukung lain di game ini</h3>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Istilah</th>
+              <th scope="col">Penjelasan sederhana</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Pseudocode (kode semu)</td><td>Tulisan langkah-langkah algoritma memakai bahasa sehari-hari, bukan bahasa pemrograman sungguhan.</td></tr>
+            <tr><td>Algoritma</td><td>Urutan langkah yang jelas dan berurutan untuk menyelesaikan satu masalah.</td></tr>
+            <tr><td>Percabangan (branching)</td><td>Pilihan jalan dalam program, ditulis dengan JIKA–MAKA–LAINNYA.</td></tr>
+            <tr><td>Mod / sisa bagi (modulo)</td><td>Sisa hasil pembagian. Contoh: 7 mod 2 = 1, sedangkan 8 mod 2 = 0.</td></tr>
+            <tr><td>Tracing Table (tabel penelusuran)</td><td>Tabel yang dipakai untuk mencatat nilai tiap variabel setelah setiap baris dijalankan.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" id="btnDictBack">🗺️ Kembali ke Peta Level</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== 3. PETA LEVEL ====================== -->
+  <section id="screen-map" class="screen">
+    <div class="card">
+      <h2>🗺️ Peta Level</h2>
+      <p class="muted">
+        Selesaikan level secara berurutan. Level berikutnya terbuka setelah kamu lulus level sebelumnya
+        (skor minimal 70).
+      </p>
+
+      <div class="map-grid">
+        <button type="button" class="level-card lvl-1" id="cardLevel1" data-level="1">
+          <span class="level-badge" aria-hidden="true">🟢</span>
+          <span class="level-title">Level 1 — Pemula</span>
+          <span class="level-desc">Menulis pseudocode (kode semu) untuk menentukan bilangan Genap atau Ganjil.</span>
+          <span class="level-status" id="statusLevel1">🔒 Terkunci</span>
+        </button>
+
+        <button type="button" class="level-card lvl-2" id="cardLevel2" data-level="2">
+          <span class="level-badge" aria-hidden="true">🟡</span>
+          <span class="level-title">Level 2 — Menengah</span>
+          <span class="level-desc">Mengisi tabel Tracing (penelusuran) lalu menemukan Logical Error (kesalahan logika berpikir).</span>
+          <span class="level-status" id="statusLevel2">🔒 Terkunci</span>
+        </button>
+
+        <button type="button" class="level-card lvl-3" id="cardLevel3" data-level="3">
+          <span class="level-badge" aria-hidden="true">🔴</span>
+          <span class="level-title">Level 3 — Tantangan</span>
+          <span class="level-desc">Menulis pseudocode dengan percabangan JIKA–LAINNYA berlapis untuk kategori IMT.</span>
+          <span class="level-status" id="statusLevel3">🔒 Terkunci</span>
+        </button>
+      </div>
+
+      <div class="btn-row center-row">
+        <button type="button" class="btn btn-secondary" id="btnOpenTutorial">📘 Buka Contoh &amp; Tutorial</button>
+        <button type="button" class="btn btn-secondary" id="btnOpenDictionary2">📖 Kamus Istilah</button>
+        <button type="button" class="btn btn-danger-ghost" id="btnResetProgress">♻️ Reset Progres</button>
+      </div>
+
+      <p class="muted small center" id="progressSummary"></p>
+    </div>
+  </section>
+
+  <!-- ====================== 4. TUTORIAL / CONTOH ====================== -->
+  <section id="screen-tutorial" class="screen">
+    <div class="card">
+      <h2>📘 Contoh &amp; Tutorial (tidak dinilai)</h2>
+      <p class="muted">Baca dulu tiga contoh ini supaya kamu paham cara kerja game. Setelah siap, kembali ke Peta Level.</p>
+
+      <h3>Contoh A — Menghitung rata-rata</h3>
+      <pre class="code-box">MULAI
+  INPUT nilai1, nilai2, nilai3
+  total = nilai1 + nilai2 + nilai3
+  rata_rata = total / 3
+  TAMPILKAN rata_rata
+SELESAI</pre>
+      <p>
+        Uji dengan nilai1 = 85, nilai2 = 90, nilai3 = 80 → total = 255, lalu rata_rata = 255 / 3 = <strong>85</strong>.
+        Hasil ini benar.
+      </p>
+
+      <h3>Contoh B — Menentukan kelulusan (KKM = 75)</h3>
+      <pre class="code-box">MULAI
+  INPUT nilai
+  JIKA nilai &gt;= 75 MAKA
+    TAMPILKAN "TUNTAS"
+  LAINNYA
+    TAMPILKAN "BELUM TUNTAS"
+SELESAI</pre>
+      <p>
+        Kalau nilai = 80, maka 80 &gt;= 75 benar, sehingga Output (hasil yang ditampilkan) adalah "TUNTAS".
+        Kalau nilai = 60, Output-nya "BELUM TUNTAS".
+      </p>
+
+      <h3>Contoh C — Kasus debugging (cara mengisi tabel Tracing / Desk-Checking)</h3>
+      <pre class="code-box">MULAI
+  INPUT nilai_tugas, nilai_ulangan
+  nilai_akhir = nilai_tugas + nilai_ulangan / 2
+  TAMPILKAN nilai_akhir
+SELESAI</pre>
+      <p>
+        Uji dengan nilai_tugas = 80 dan nilai_ulangan = 90. Tabel penelusurannya:
+      </p>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Baris</th>
+              <th scope="col">nilai_tugas</th>
+              <th scope="col">nilai_ulangan</th>
+              <th scope="col">nilai_akhir</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>INPUT</td><td>80</td><td>90</td><td>—</td></tr>
+            <tr><td>nilai_akhir = nilai_tugas + nilai_ulangan / 2</td><td>80</td><td>90</td><td>80 + 45 = <strong>125</strong></td></tr>
+            <tr><td>TAMPILKAN nilai_akhir</td><td>80</td><td>90</td><td>125</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Hasil program 125 itu <strong>salah</strong>, karena pembagian dihitung lebih dulu
+        (90 / 2 = 45) sebelum penjumlahan. Ini contoh <strong>Logical Error (kesalahan logika berpikir)</strong> —
+        tulisannya rapi, tapi maksudnya keliru.
+      </p>
+      <p>
+        Perbaikan yang benar: <code>nilai_akhir = (nilai_tugas + nilai_ulangan) / 2</code> → (80 + 90) / 2 = <strong>85</strong>.
+      </p>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" id="btnTutorialBack">🗺️ Kembali ke Peta Level</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== 5. LEVEL 1 ====================== -->
+  <section id="screen-level1" class="screen theme-1">
+    <div class="card">
+      <div class="level-head">
+        <h2>🟢 Level 1 — Pemula</h2>
+        <span class="score-chip" id="chip1">Skor: 0 / 100</span>
+      </div>
+
+      <div class="task-box">
+        <h3>Soal</h3>
+        <p>
+          Tulis pseudocode (kode semu) untuk menentukan <strong>bilangan genap atau ganjil</strong>
+          dari sebuah angka yang di-Input (data yang dimasukkan).
+        </p>
+        <p class="muted small">
+          Struktur yang harus ada: MULAI → INPUT → pengecekan sisa bagi 2 (mod/sisa) →
+          percabangan JIKA–LAINNYA → OUTPUT (hasil yang ditampilkan) "Genap" / "Ganjil" → SELESAI.
+        </p>
+      </div>
+
+      <label class="field-label" for="answer1">Tulis pseudocode-mu di sini:</label>
+      <textarea id="answer1" class="code-input" rows="12" spellcheck="false"
+        placeholder="MULAI&#10;  INPUT ...&#10;  ...&#10;SELESAI"></textarea>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" id="btnCheck1">✅ Periksa Jawaban</button>
+        <button type="button" class="btn btn-hint" id="btnHint1">💡 Petunjuk (−5 poin)</button>
+        <button type="button" class="btn btn-ghost" id="btnReset1">↺ Kosongkan</button>
+      </div>
+
+      <div class="hint-box is-hidden" id="hint1">
+        <strong>💡 Petunjuk:</strong>
+        <p>
+          Sebuah bilangan disebut genap jika sisanya 0 ketika dibagi 2. Di pseudocode kamu bisa menulis
+          <code>sisa = angka mod 2</code> (atau <code>angka % 2</code>), lalu periksa
+          <code>JIKA sisa = 0 MAKA TAMPILKAN "Genap" LAINNYA TAMPILKAN "Ganjil"</code>.
+        </p>
+      </div>
+
+      <div class="feedback" id="feedback1" role="status" aria-live="polite"></div>
+
+      <details class="model-answer is-hidden" id="model1">
+        <summary>📄 Lihat contoh jawaban benar</summary>
+        <pre class="code-box">MULAI
+  INPUT angka
+  sisa = angka mod 2
+  JIKA sisa = 0 MAKA
+    TAMPILKAN "Genap"
+  LAINNYA
+    TAMPILKAN "Ganjil"
+SELESAI</pre>
+      </details>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary is-hidden" id="btnSubmit1">➡️ Kumpulkan &amp; Lihat Hasil</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== 6. LEVEL 2 ====================== -->
+  <section id="screen-level2" class="screen theme-2">
+    <div class="card">
+      <div class="level-head">
+        <h2>🟡 Level 2 — Menengah</h2>
+        <span class="score-chip" id="chip2">Skor: 0 / 100</span>
+      </div>
+
+      <div class="task-box">
+        <h3>Soal</h3>
+        <p>
+          Perhatikan pseudocode berikut. Ada satu <strong>Logical Error (kesalahan logika berpikir)</strong> di dalamnya.
+        </p>
+        <p class="muted small">
+          Uji dengan nilai_uts = <strong>80</strong> dan nilai_uas = <strong>90</strong>.
+          Isi tabel <strong>Tracing / Desk-Checking (menelusuri nilai variabel baris demi baris)</strong> dulu,
+          baru tentukan baris yang salah.
+        </p>
+      </div>
+
+      <pre class="code-box">MULAI
+  INPUT nilai_uts, nilai_uas
+  nilai_akhir = nilai_uts * 0.4 + nilai_uas * 0.4
+  TAMPILKAN nilai_akhir
+SELESAI</pre>
+
+      <h3>1️⃣ Tabel Tracing (penelusuran)</h3>
+
+      <div class="trace-list" id="traceList">
+
+        <div class="trace-row">
+          <div class="trace-line"><span class="ln">1</span><code>MULAI</code></div>
+          <div class="trace-cells"><span class="muted small">Belum ada variabel yang menyimpan nilai.</span></div>
+        </div>
+
+        <div class="trace-row">
+          <div class="trace-line"><span class="ln">2</span><code>INPUT nilai_uts, nilai_uas</code></div>
+          <div class="trace-cells">
+            <span class="given-cell"><span class="cell-label">nilai_uts</span><span class="given-value">80</span></span>
+            <span class="given-cell"><span class="cell-label">nilai_uas</span><span class="given-value">90</span></span>
+            <span class="given-cell"><span class="cell-label">nilai_akhir</span><span class="given-value muted">—</span></span>
+          </div>
+        </div>
+
+        <div class="trace-row">
+          <div class="trace-line"><span class="ln">3</span><code>nilai_akhir = nilai_uts * 0.4 + nilai_uas * 0.4</code></div>
+          <div class="trace-cells">
+            <label class="cell">
+              <span class="cell-label">80 × 0.4 =</span>
+              <input type="text" inputmode="decimal" id="t2step1" class="cell-input" autocomplete="off" aria-label="Hasil 80 kali 0.4" />
+            </label>
+            <label class="cell">
+              <span class="cell-label">90 × 0.4 =</span>
+              <input type="text" inputmode="decimal" id="t2step2" class="cell-input" autocomplete="off" aria-label="Hasil 90 kali 0.4" />
+            </label>
+            <label class="cell">
+              <span class="cell-label">nilai_akhir =</span>
+              <input type="text" inputmode="decimal" id="t2final" class="cell-input" autocomplete="off" aria-label="Nilai variabel nilai_akhir" />
+            </label>
+          </div>
+        </div>
+
+        <div class="trace-row">
+          <div class="trace-line"><span class="ln">4</span><code>TAMPILKAN nilai_akhir</code></div>
+          <div class="trace-cells">
+            <label class="cell">
+              <span class="cell-label">Output (hasil yang ditampilkan) =</span>
+              <input type="text" inputmode="decimal" id="t2output" class="cell-input" autocomplete="off" aria-label="Nilai yang ditampilkan di layar" />
+            </label>
+          </div>
+        </div>
+
+        <div class="trace-row">
+          <div class="trace-line"><span class="ln">5</span><code>SELESAI</code></div>
+          <div class="trace-cells"><span class="muted small">Program berhenti.</span></div>
+        </div>
+
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" id="btnCheckTrace2">✅ Periksa Tabel Tracing</button>
+        <button type="button" class="btn btn-hint" id="btnHint2">💡 Petunjuk (−5 poin)</button>
+        <button type="button" class="btn btn-ghost" id="btnReset2">↺ Kosongkan</button>
+      </div>
+
+      <div class="hint-box is-hidden" id="hint2">
+        <strong>💡 Petunjuk:</strong>
+        <p>Jumlah semua bobot penilaian seharusnya 100%.</p>
+      </div>
+
+      <div class="feedback" id="feedback2trace" role="status" aria-live="polite"></div>
+
+      <fieldset class="bug-section" id="bugSection" disabled>
+        <legend>2️⃣ Temukan Bug (kesalahan pada program)</legend>
+
+        <p>Pilih baris pseudocode mana yang mengandung Logical Error (kesalahan logika berpikir):</p>
+
+        <div class="code-box code-selectable" id="codeBox2">
+          <label class="code-line">
+            <input type="radio" name="bugline" value="1" />
+            <span class="ln">1</span><code>MULAI</code>
+          </label>
+          <label class="code-line">
+            <input type="radio" name="bugline" value="2" />
+            <span class="ln">2</span><code>INPUT nilai_uts, nilai_uas</code>
+          </label>
+          <label class="code-line">
+            <input type="radio" name="bugline" value="3" />
+            <span class="ln">3</span><code>nilai_akhir = nilai_uts * 0.4 + nilai_uas * 0.4</code>
+          </label>
+          <label class="code-line">
+            <input type="radio" name="bugline" value="4" />
+            <span class="ln">4</span><code>TAMPILKAN nilai_akhir</code>
+          </label>
+          <label class="code-line">
+            <input type="radio" name="bugline" value="5" />
+            <span class="ln">5</span><code>SELESAI</code>
+          </label>
+        </div>
+
+        <label class="field-label" for="fix2">3️⃣ Tuliskan perbaikan baris tersebut:</label>
+        <textarea id="fix2" class="code-input" rows="3" spellcheck="false"
+          placeholder="nilai_akhir = ..."></textarea>
+
+        <div class="btn-row">
+          <button type="button" class="btn btn-primary" id="btnCheckBug2">✅ Periksa Jawaban Bug</button>
+        </div>
+
+        <div class="feedback" id="feedback2bug" role="status" aria-live="polite"></div>
+      </fieldset>
+
+      <details class="model-answer is-hidden" id="model2">
+        <summary>📄 Lihat kunci jawaban Level 2</summary>
+        <p><strong>Baris yang salah:</strong> baris 3 — <code>nilai_akhir = nilai_uts * 0.4 + nilai_uas * 0.4</code></p>
+        <p>
+          Total bobotnya hanya 0,4 + 0,4 = <strong>0,8</strong> (80%), padahal seharusnya 1,0 (100%).
+          Akibatnya nilai_akhir = 32 + 36 = 68, bukan nilai yang sebenarnya.
+        </p>
+        <p><strong>Perbaikan yang diterima:</strong></p>
+        <pre class="code-box">nilai_akhir = nilai_uts * 0.5 + nilai_uas * 0.5</pre>
+        <p>atau (kalau ada komponen tugas tambahan):</p>
+        <pre class="code-box">nilai_akhir = nilai_uts * 0.4 + nilai_uas * 0.4 + nilai_tugas * 0.2</pre>
+        <p>atau bentuk sederhana:</p>
+        <pre class="code-box">nilai_akhir = (nilai_uts + nilai_uas) / 2</pre>
+      </details>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary is-hidden" id="btnSubmit2">➡️ Kumpulkan &amp; Lihat Hasil</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== 7. LEVEL 3 ====================== -->
+  <section id="screen-level3" class="screen theme-3">
+    <div class="card">
+      <div class="level-head">
+        <h2>🔴 Level 3 — Tantangan</h2>
+        <span class="score-chip" id="chip3">Skor: 0 / 100</span>
+      </div>
+
+      <div class="task-box">
+        <h3>Soal</h3>
+        <p>
+          Buat pseudocode (kode semu) untuk menentukan kategori IMT (Indeks Massa Tubuh),
+          dengan rumus <strong>IMT = berat / (tinggi × tinggi)</strong>.
+        </p>
+        <ul class="rule-list">
+          <li>IMT &lt; 18,5 → tampilkan <strong>"Kurus"</strong></li>
+          <li>IMT 18,5 – 25 → tampilkan <strong>"Normal"</strong></li>
+          <li>IMT &gt; 25 → tampilkan <strong>"Gemuk"</strong></li>
+        </ul>
+        <p class="muted small">
+          Struktur yang harus ada: MULAI → INPUT berat &amp; tinggi → hitung IMT →
+          minimal 2 percabangan JIKA–LAINNYA berurutan → OUTPUT "Kurus"/"Normal"/"Gemuk" → SELESAI.
+        </p>
+      </div>
+
+      <label class="field-label" for="answer3">Tulis pseudocode-mu di sini:</label>
+      <textarea id="answer3" class="code-input" rows="16" spellcheck="false"
+        placeholder="MULAI&#10;  INPUT ...&#10;  ...&#10;SELESAI"></textarea>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" id="btnCheck3">✅ Periksa Jawaban</button>
+        <button type="button" class="btn btn-hint" id="btnHint3">💡 Petunjuk (−5 poin)</button>
+        <button type="button" class="btn btn-ghost" id="btnReset3">↺ Kosongkan</button>
+      </div>
+
+      <div class="hint-box is-hidden" id="hint3">
+        <strong>💡 Petunjuk:</strong>
+        <p>
+          Dibutuhkan lebih dari satu percabangan JIKA–LAINNYA berurutan.
+          Periksa dulu apakah IMT &lt; 18,5. Kalau tidak, periksa lagi apakah IMT &lt;= 25.
+          Kalau dua-duanya tidak, berarti IMT &gt; 25.
+        </p>
+      </div>
+
+      <div class="feedback" id="feedback3" role="status" aria-live="polite"></div>
+
+      <details class="model-answer is-hidden" id="model3">
+        <summary>📄 Lihat contoh jawaban benar</summary>
+        <pre class="code-box">MULAI
+  INPUT berat, tinggi
+  IMT = berat / (tinggi * tinggi)
+  JIKA IMT &lt; 18.5 MAKA
+    TAMPILKAN "Kurus"
+  LAINNYA
+    JIKA IMT &lt;= 25 MAKA
+      TAMPILKAN "Normal"
+    LAINNYA
+      TAMPILKAN "Gemuk"
+SELESAI</pre>
+      </details>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary is-hidden" id="btnSubmit3">➡️ Kumpulkan &amp; Lihat Hasil</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== 8. AKHIR LEVEL ====================== -->
+  <section id="screen-levelend" class="screen">
+    <div class="card center">
+      <div class="celebrate" id="celebrateIcon" aria-hidden="true">🎉</div>
+      <h2 id="levelEndTitle">Level Selesai!</h2>
+      <p class="big-score"><span id="levelEndScore">0</span><small>/ 100</small></p>
+      <p class="stars" id="levelEndStars" aria-hidden="true">⭐</p>
+      <p class="muted" id="levelEndMsg"></p>
+
+      <div class="btn-row center-row">
+        <button type="button" class="btn btn-primary" id="btnLevelEndNext">➡️ Lanjut</button>
+        <button type="button" class="btn btn-secondary" id="btnLevelEndRetry">↺ Ulangi Level</button>
+        <button type="button" class="btn btn-ghost" id="btnLevelEndMap">🗺️ Kembali ke Peta Level</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== 9. AKHIR GAME ====================== -->
+  <section id="screen-gameend" class="screen">
+    <div class="card center no-print">
+      <div class="celebrate" aria-hidden="true">🏆</div>
+      <h2>Selamat! Semua Level Selesai</h2>
+
+      <p class="big-score"><span id="gameEndScore">0</span><small>/ 100</small></p>
+      <p class="predikat" id="gameEndPredikat">—</p>
+      <p class="stars" id="gameEndStars" aria-hidden="true">⭐</p>
+
+      <h3>Ringkasan Penilaian per Aspek</h3>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Aspek</th>
+              <th scope="col">Skor (1–4)</th>
+              <th scope="col">Keterangan</th>
+            </tr>
+          </thead>
+          <tbody id="aspectBody"></tbody>
+        </table>
+      </div>
+
+      <div class="name-row">
+        <label for="studentName">Nama untuk sertifikat (boleh dikosongkan):</label>
+        <input type="text" id="studentName" maxlength="40" autocomplete="off" placeholder="Tulis namamu di sini" />
+      </div>
+
+      <div class="btn-row center-row">
+        <button type="button" class="btn btn-primary" id="btnPrintCert">🖨️ Cetak Sertifikat</button>
+        <button type="button" class="btn btn-secondary" id="btnPlayAgain">🔁 Main Lagi</button>
+        <button type="button" class="btn btn-ghost" id="btnGameEndMap">🗺️ Kembali ke Peta Level</button>
+      </div>
+
+      <details class="rubric-details">
+        <summary>📋 Lihat rubrik penilaian lengkap</summary>
+        <div class="table-wrap">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Aspek</th>
+                <th scope="col">Skor 4</th>
+                <th scope="col">Skor 3</th>
+                <th scope="col">Skor 2</th>
+                <th scope="col">Skor 1</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Struktur pseudocode</td>
+                <td>Lengkap &amp; runtut</td>
+                <td>Lengkap, kurang runtut</td>
+                <td>Ada bagian hilang</td>
+                <td>Tidak jelas</td>
+              </tr>
+              <tr>
+                <td>Ketepatan logika</td>
+                <td>Benar &amp; efisien</td>
+                <td>Benar, kurang efisien</td>
+                <td>Ada kesalahan kecil</td>
+                <td>Logika keliru</td>
+              </tr>
+              <tr>
+                <td>Proses debugging (tracing)</td>
+                <td>Tabel rapi &amp; tepat</td>
+                <td>Ditemukan, kurang rapi</td>
+                <td>Ditemukan sebagian</td>
+                <td>Belum ditemukan</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </div>
+
+    <!-- SERTIFIKAT (tampil di layar & dicetak) -->
+    <div class="certificate" id="certificate">
+      <div class="cert-inner">
+        <div class="cert-seal" aria-hidden="true">🏅</div>
+        <p class="cert-kicker">SERTIFIKAT PENYELESAIAN</p>
+        <h2 class="cert-title">Petualangan Pseudocode &amp; Debugging</h2>
+        <p class="cert-sub">LKPD Interaktif — Informatika Kelas 8 (Fase D) · Berpikir Komputasional</p>
+
+        <p class="cert-line">Diberikan kepada</p>
+        <p class="cert-name" id="certName">Murid Hebat</p>
+        <p class="cert-line">telah menyelesaikan seluruh 3 level dengan predikat</p>
+        <p class="cert-predikat" id="certPredikat">—</p>
+        <p class="cert-score">Total Skor: <strong id="certScore">0</strong> / 100</p>
+
+        <div class="cert-foot">
+          <span id="certSchool">SMP Negeri 19 Kota Bekasi</span>
+          <span id="certDate">—</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer class="site-footer no-print">
+  <p>
+    LKPD Interaktif — Pseudocode (kode semu) &amp; Debugging (menemukan dan memperbaiki kesalahan program) ·
+    Informatika Kelas 8 · Berpikir Komputasional
+  </p>
+  <p class="muted small">Progres disimpan lokal di browser ini. Tidak ada data yang dikirim ke server.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
